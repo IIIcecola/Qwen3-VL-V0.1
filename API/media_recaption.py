@@ -145,6 +145,7 @@ class MediaProcessor:
           return response.choices[0].message.content
   
       except Exception as e:
+          traceback.print_exc()
           raise RuntimeError(f"实体识别失败: {str(e)}")
 
     def copy_and_rename_media_file(self, source_path, dest_dir, file_id):
@@ -294,6 +295,7 @@ class MediaProcessor:
             return anno_path, file_id, new_media_path
 
         except Exception as e:
+            traceback.print_exc()
             raise RuntimeError(f"创建新标注文件失败: {str(e)}")
 
     def ensure_metadata_exists(self):
@@ -456,6 +458,7 @@ class MediaProcessor:
                                         res_key = f"{img.width}x{img.height}"
                                         resolution_distribution[res_key] = resolution_distribution.get(res_key, 0) + 1
                                 except Exception:
+                                    traceback.print_exc()
                                     pass
 
             image_meta["data_stats"]["total_images"] = total_images
@@ -514,6 +517,7 @@ class MediaProcessor:
                                         total_duration_seconds += duration
                                     cap.release()
                                 except Exception:
+                                    traceback.print_exc()
                                     pass
 
             video_meta["data_stats"]["total_videos"] = total_videos
@@ -589,6 +593,7 @@ class MediaProcessor:
             }
 
         except Exception as e:
+            traceback.print_exc()
             return {
                 "success": False,
                 "path": file_path,
@@ -673,6 +678,7 @@ class MediaProcessor:
             print(f"结果摘要已保存至: {os.path.join(self.root_dir, 'recaption_processing_result.json')}")
 
         except Exception as e:
+            traceback.print_exc()
             result["error"] = str(e)
             print(f"\n处理过程中发生严重错误: {str(e)}", file=sys.stderr)
             traceback.print_exc()
